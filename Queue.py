@@ -5,7 +5,7 @@ class Queue(object):
         def __init__(self, name, nxt = None):
             'sets the two fields (str/Node)'
             self.title = name
-            self.next = nxt # name of the next element
+            self.next = nxt # pointer to the next element
         def getName(self):
             'returns title'
             return self.title
@@ -76,27 +76,34 @@ class Queue(object):
             return True
         return False
 
+def myAdd(myQueue, inputList):
+    if len(inputList) > 1:
+        myQueue.add(' '.join(inputList[1:]))
+def mySeek(myQueue, inputList):
+    if not myQueue.emptyMessage():
+        print(myQueue.seek())
+def myPop(myQueue, inputList):
+    if not myQueue.emptyMessage():
+        print(myQueue.pop())
+def myList(myQueue, inputList):
+    if not myQueue.emptyMessage():
+        print('\n'.join(myQueue.queueToList()))
+
 def main(someList = []):
     'A UI wrapper around the Queue class which mimics a command line allowing four distinct non-case sensitive commands'
+    'Unlike the Queue class I defined, the nodes in this Queue must be used to store strings'
     myQueue = Queue(someList)
-    UI = ''
+    switch = {'add' : myAdd, 'seek' : mySeek, 'pop' : myPop, 'list' : myList}
     print('\nAvailable commands:\nAdd, Seek, Pop, List\t(Not Case Sensitive)\nExit to quit\n\n')
+    UI = input('>>>\t')
     while UI.lower() != 'exit':
-        UI = input('>>>\t')
         inputList = UI.split()
         if len(inputList) > 0:
-            if inputList[0].lower() not in ('add', 'seek', 'pop', 'list', 'exit'):
+            try:
+                switch[inputList[0].lower()](myQueue, inputList)
+            except:
                     print('That command is not recognized')
-            elif inputList[0].lower() == 'add':
-                if len(inputList) > 1:
-                    myQueue.add(' '.join(inputList[1:]))
-            elif not myQueue.emptyMessage():
-                if inputList[0].lower() == 'seek':
-                    print(myQueue.seek())
-                if inputList[0].lower() == 'pop':
-                    print(myQueue.pop())
-                if inputList[0].lower() == 'list':
-                    print('\n'.join(myQueue.queueToList()))
-        
+        UI = input('>>>\t')
+# These are sample ways of calling my main function. The first involves a situation where you'd like to initilize a non-empty Queue specifically for 11 songs.
 # main(['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5', 'Song 6', 'Song 7', 'Song 8', 'Song 9', 'Song 10', 'Song 11']) 
 # main()
