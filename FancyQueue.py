@@ -30,6 +30,16 @@ class Queue(object):
                 else:
                     self.first = self.Node(someList[i], self.first)
 
+    def next(self, someStr):
+        'This method is not a traditional functionality of a Queue but does exist in several instances including music queues of popular music streaming services'
+        'This allows you to add a Node not to the end but to the front where it will be next'
+        self.length += 1
+        if self.first == None:
+            self.last = self.Node(someStr)
+            self.first = self.last
+        else:
+            self.first = self.Node(someStr, self.first)
+
     def add(self, someStr):
         'adds a Node to the Queue and assigns the val of someStr to its title field'
         self.length += 1
@@ -74,6 +84,9 @@ class Queue(object):
             return True
         return False
 
+def myNext(myQueue, inputList):
+    if len(inputList) > 1:
+        myQueue.next(' '.join(inputList[1:]))
 def myAdd(myQueue, inputList):
     if len(inputList) > 1:
         myQueue.add(' '.join(inputList[1:]))
@@ -88,13 +101,13 @@ def myList(myQueue, inputList):
         print('\n'.join(myQueue.queueToList()))
 
 def main(someList = []):
-    'A UI wrapper around the Queue class which mimics a command line allowing four distinct non-case sensitive commands'
+    'A UI wrapper around the Queue class which mimics a command line allowing six distinct non-case sensitive commands, two of which are redundant (list & ls)'
     'Unlike the Queue class I defined, the nodes in this Queue must be used to store strings'
     if any( type(element) != str for element in someList ):
         raise('Non-String element found in list\nExpected only string values')
     myQueue = Queue(someList)
-    switch = {'add' : myAdd, 'seek' : mySeek, 'pop' : myPop, 'list' : myList}
-    print('\nAvailable commands:\nSeek, Pop, Add, Next, List\t(Not Case Sensitive)\nAdd and Next take an argument\t(ex: add Hello World)\nExit to quit\n\n')
+    switch = {'next' : myNext, 'add' : myAdd, 'seek' : mySeek, 'pop' : myPop, 'list' : myList, 'ls' : myList}
+    print('\nAvailable commands:\nSeek, Pop, Add, Next, List, LS\t(Not Case Sensitive)\nAdd and Next take an argument\t(ex: add Hello World)\nExit to quit\n\n')
     UI = input('>>>\t')
     while UI.lower() != 'exit':
         inputList = UI.split()
